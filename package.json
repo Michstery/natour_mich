@@ -1,0 +1,24 @@
+{
+  "name": "mich-natours",
+  "version": "1.0.0",
+  "description": "learning express, mongo, nodejs",
+  "main": "app.js",
+  "scripts": {
+    "start:dev": "nodemon server.js",
+    "start:prod": "NODE_ENV=production nodemon server.js",
+    "debug": "ndb server.js"
+  },
+  "author": "michstery",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.0.14",
+    "morgan": "^1.10.0",
+    "nodemailer": "^6.7.2",
+    "slugify": "^1.6.4",
+    "validator": "^13.7.0"
+  }
+}
