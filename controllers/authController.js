@@ -150,7 +150,13 @@ exports.resetPassword = catchAsync( async (req,res,next) => {
     user.passwordConfirm = req.body.passwordConfirm;
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
+    await user.save();
     // 3) Update the changed password
 
     // 4) Log the user in
+    const token = signToken(user._id);
+    res.status(200).json({
+        status: 'success',
+        token
+    })
 });
