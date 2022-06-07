@@ -160,3 +160,21 @@ exports.resetPassword = catchAsync( async (req,res,next) => {
         token
     })
 });
+
+exports.updatePassword = catchAsync(async (req,res,next) => {
+    //1) Get user from collection
+    const user = User.findById(req.user.id).select('+password');
+    const { newPassword, confirmPassword } = req.body;
+    
+    //2) check if password is correct
+    if( newPassword != confirmPassword ) {
+        return next(new AppError('Incorrect password entries', 401))
+    } 
+    if(!user || !(await user.correctPassword(password, user.password))){
+        return next(new AppError('Incorrect email or password', 401))
+    }
+
+    //3) if so update the user
+
+    //4) log User in, send  JWT
+})
