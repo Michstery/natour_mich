@@ -12,21 +12,35 @@ const signToken = id => {
     });
 }
 
+const createSendToken = (user, statusCode, res) => {
+    const token = signToken(user._id);
+
+    res.status(statusCode).json({
+        status: 'success',
+        token,
+        data: {
+            user
+        }
+    });
+}
+
 exports.signup = catchAsync(async (req,res,next) => {
     const newUser = await User.create(req.body);
     if(!newUser){
         return next(new AppError('No User Created', 400))
      }
 
-     const token = signToken(newUser._id);
+    //  const token = signToken(newUser._id);
 
-    res.status(201).json({
-        status:'success',
-        token,
-        data: {
-            user : newUser
-        } 
-    })
+     createSendToken(newUser,201,res)
+
+    // res.status(201).json({
+    //     status:'success',
+    //     token,
+    //     data: {
+    //         user : newUser
+    //     } 
+    // })
 });
 
 exports.login = catchAsync( async(req,res,next) =>{
@@ -43,11 +57,12 @@ exports.login = catchAsync( async(req,res,next) =>{
         return next(new AppError('Incorrect email or password', 401))
     }
     // 3) if everything is okay, then send token to client
-    const token = signToken(user._id);
-    res.status(200).json({
-        status: 'success',
-        token
-    })
+    // const token = signToken(user._id);
+    // res.status(200).json({
+    //     status: 'success',
+    //     token
+    // })
+    createSendToken(user,200,res)
 
 });
 
@@ -154,27 +169,30 @@ exports.resetPassword = catchAsync( async (req,res,next) => {
     // 3) Update the changed password
 
     // 4) Log the user in
-    const token = signToken(user._id);
-    res.status(200).json({
-        status: 'success',
-        token
-    })
+    // const token = signToken(user._id);
+    // res.status(200).json({
+    //     status: 'success',
+    //     token
+    // })
+    createSendToken(user,200,res)
 });
 
 exports.updatePassword = catchAsync(async (req,res,next) => {
     //1) Get user from collection
     const user = User.findById(req.user.id).select('+password');
-    const { newPassword, confirmPassword } = req.body;
+    const { passwordConfirm, password, confirmNewPassword } = req.body;
     
     //2) check if password is correct
-    if( newPassword != confirmPassword ) {
-        return next(new AppError('Incorrect password entries', 401))
-    } 
-    if(!user || !(await user.correctPassword(password, user.password))){
+    if( !(await user.correctPassword(passwordConfirm, user.password))){
         return next(new AppError('Incorrect email or password', 401))
     }
 
     //3) if so update the user
+    user.password = password;
+    user.passwordConfirm = passwordConfirm;
+    await user.save();
+    // note: user.findByIdAndUpdate will not work as intended
 
     //4) log User in, send  JWT
+    createSendToken(user,200,res)
 })
