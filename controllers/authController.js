@@ -177,22 +177,23 @@ exports.resetPassword = catchAsync( async (req,res,next) => {
     createSendToken(user,200,res)
 });
 
-exports.updatePassword = catchAsync(async (req,res,next) => {
-    //1) Get user from collection
-    const user = User.findById(req.user.id).select('+password');
-    const { passwordConfirm, password, confirmNewPassword } = req.body;
-    
-    //2) check if password is correct
-    if( !(await user.correctPassword(passwordConfirm, user.password))){
-        return next(new AppError('Incorrect email or password', 401))
+exports.updatePassword = catchAsync(async (req, res, next) => {
+    // 1) Get user from collection
+    const user = await User.findById(req.user.id).select('+password');
+    console.log(user)
+  
+    // 2) Check if POSTed current password is correct
+    if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
+      return next(new AppError('Your current password is wrong.', 401));
     }
-
-    //3) if so update the user
-    user.password = password;
-    user.passwordConfirm = passwordConfirm;
+  
+    // 3) If so, update password
+    user.password = req.body.password;
+    user.passwordConfirm = req.body.passwordConfirm;
     await user.save();
-    // note: user.findByIdAndUpdate will not work as intended
-
-    //4) log User in, send  JWT
-    createSendToken(user,200,res)
-})
+    // User.findByIdAndUpdate will NOT work as intended!
+  
+    // 4) Log user in, send JWT
+    createSendToken(user, 200, res);
+  });
+  
