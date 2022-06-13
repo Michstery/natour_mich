@@ -1,4 +1,5 @@
 const User = require('../models/userModel');
+const AppError = require('../utilities/appError');
 const catchAsync = require('../utilities/catchAsync');
 
 /////////\\\\\\\\\  ~ USERS HANDLER FUNCTIONS ~ ////////////////\\\\\\\\\\\
@@ -12,6 +13,18 @@ exports.getAllUsers = catchAsync(async(req, res) => {
         }
     });
 });
+
+exports.updateMe = (req, res, next) => {
+    // 1) create error if user POSTs password data
+    if (req.body.password || req.body.passwordConfirm) {
+        return next(new AppError("This route is not for password updates. Use /updatePassword route", 400));
+    }
+
+    //2) update user document
+    res.status(200).json({
+        status: 'success'
+    })
+}
 
 exports.createNewUser = (req, res) => {
     res.status(500).json({
