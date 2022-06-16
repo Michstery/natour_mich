@@ -2,6 +2,7 @@
 // const fs = require('fs');
 // require express after npm i express
 const express = require('express');
+const rateLimit = require('express-rate-limit');
 const morgan = require('morgan');
 const AppError = require('./utilities/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -9,16 +10,19 @@ const tourRouter = require('./routes/tourRoute');
 const userRouter = require('./routes/userRoute');
 
 
-// MIDDLEWARE
 // set express call to app
 const app = express();
 
-
-
-// console.log(process.env.NODE_ENV);
+// GLOBAL  MIDDLEWARE
 if (process.env.NODE_ENV === 'development'){
     app.use(morgan('dev'));
 }
+
+const limiter = rateLimit({
+    max: 100,
+    windowMs: 60 * 60 * 1000,
+    message: 'Too Many Requests from this IP, please try again in an hour!'
+})
 
 
 // in order to carry out some post req we need a JSON middleware
