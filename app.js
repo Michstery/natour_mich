@@ -16,13 +16,14 @@ const app = express();
 // GLOBAL  MIDDLEWARE
 if (process.env.NODE_ENV === 'development'){
     app.use(morgan('dev'));
-}
+};
 
 const limiter = rateLimit({
     max: 100,
     windowMs: 60 * 60 * 1000,
     message: 'Too Many Requests from this IP, please try again in an hour!'
-})
+});
+app.use('/api', limiter);
 
 
 // in order to carry out some post req we need a JSON middleware
