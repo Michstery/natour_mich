@@ -3,17 +3,20 @@
 // require express after npm i express
 const express = require('express');
 const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
 const morgan = require('morgan');
 const AppError = require('./utilities/appError');
 const globalErrorHandler = require('./controllers/errorController');
 const tourRouter = require('./routes/tourRoute');
 const userRouter = require('./routes/userRoute');
 
-
 // set express call to app
 const app = express();
 
+
 // GLOBAL  MIDDLEWARE
+app.use(helmet());
+
 if (process.env.NODE_ENV === 'development'){
     app.use(morgan('dev'));
 };
@@ -35,6 +38,7 @@ app.use((req, res, next) => {
     next();
 })
 
+////////////////////////////////////////////////////////////////////////////////////////////////
 //         ~  Routes  ~
 /////////\\\\\\\\\  ~ TOURS ROUTES ~ ////////////////\\\\\\\\\\\
 app.use('/api/v1/tours', tourRouter);
