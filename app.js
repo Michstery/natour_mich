@@ -4,6 +4,8 @@
 const express = require('express');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
+const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
 const morgan = require('morgan');
 const AppError = require('./utilities/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -34,6 +36,11 @@ app.use('/api', limiter);
 // in order to carry out some post req we need a JSON middleware
 // Body Parser, reading data from body into req.body
 app.use(express.json( { limit: '10kb' } ));
+
+// Data Sanitize against NoSQL  query injection
+app.use(mongoSanitize());
+
+// Data sanitize against XSS
 
 // serving static files
 app.subscribe(express.static(`${__dirname}/public`));
