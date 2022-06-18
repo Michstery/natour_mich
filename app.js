@@ -15,12 +15,14 @@ const app = express();
 
 
 // GLOBAL  MIDDLEWARE
+//set header http security
 app.use(helmet());
 
 if (process.env.NODE_ENV === 'development'){
     app.use(morgan('dev'));
 };
 
+//limit request from a single Ip
 const limiter = rateLimit({
     max: 100,
     windowMs: 60 * 60 * 1000,
@@ -30,8 +32,13 @@ app.use('/api', limiter);
 
 
 // in order to carry out some post req we need a JSON middleware
-app.use(express.json());
+// Body Parser, reading data from body into req.body
+app.use(express.json( { limit: '10kb' } ));
+
+// serving static files
 app.subscribe(express.static(`${__dirname}/public`));
+
+// test middleware
 app.use((req, res, next) => {
     req.requestTime = new Date().toISOString();
     
