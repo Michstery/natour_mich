@@ -41,6 +41,7 @@ app.use(express.json( { limit: '10kb' } ));
 app.use(mongoSanitize());
 
 // Data sanitize against XSS
+app.use(xss());
 
 // serving static files
 app.subscribe(express.static(`${__dirname}/public`));
