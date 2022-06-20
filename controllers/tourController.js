@@ -299,3 +299,32 @@ exports.getMonthlyPlan = catchAsync(async (req, res, next)=>{
     //     })
     // }
 });
+
+
+
+
+// IMPORT DATA INTO DB
+exports.importData = async () => {
+    const tours = JSON.parse(
+        fs.readFileSync(`${__dirname}/../dev-data/data/tours.json`, 'utf-8')
+      );
+
+    try {
+      await Tour.create(tours);
+      console.log('Data successfully loaded!');
+    } catch (err) {
+      console.log(err);
+    }
+    process.exit();
+  };
+  
+  // DELETE ALL DATA FROM DB
+  exports.deleteData = async () => {
+    try {
+      await Tour.deleteMany();
+      console.log('Data successfully deleted!');
+    } catch (err) {
+      console.log(err);
+    }
+    process.exit();
+  };
