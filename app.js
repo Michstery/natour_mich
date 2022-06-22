@@ -13,6 +13,7 @@ const AppError = require('./utilities/appError');
 const globalErrorHandler = require('./controllers/errorController');
 const tourRouter = require('./routes/tourRoute');
 const userRouter = require('./routes/userRoute');
+const reviewRouter = require('./routes/reviewRoute');
 
 // set express call to app
 const app = express();
@@ -66,6 +67,8 @@ app.use((req, res, next) => {
 app.use('/api/v1/tours', tourRouter);
 /////////\\\\\\\\\  ~ USERS ROUTES ~ ////////////////\\\\\\\\\\\
 app.use('/api/v1/users', userRouter);
+/////////\\\\\\\\\  ~ USERS ROUTES ~ ////////////////\\\\\\\\\\\
+app.use('/api/v1/reviews', reviewRouter);
 
 //======== Handling unhandled Route ======
 app.all('*', (req, res, next)=> {
