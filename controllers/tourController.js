@@ -107,7 +107,10 @@ exports.createNewTour =  catchAsync(async (req, res, next)=>{
 
 exports.getTour = catchAsync(async (req, res, next)=>{
     // try{
-        const tour = await Tour.findById(req.params.id).populate('guides');
+        const tour = await Tour.findById(req.params.id).populate({
+            path: 'guides',
+            select: '-__v -passwordChangedAt '
+        });
         if(!tour){
             //for all :id routes patch,delete e.t.c it majorly handles their err
            return next(new AppError('No Tour found with this ID', 404))
