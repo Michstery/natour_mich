@@ -13,9 +13,7 @@ const reviewSchema = new mongoose.Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now(),
-        //to exclude a field from being shown, simply select property to false
-        select: false
+        default: Date.now()
     },
     tour: {
         type: mongoose.Schema.ObjectId,
@@ -33,6 +31,20 @@ const reviewSchema = new mongoose.Schema({
         toObject: {virtuals: true}
 });
 
-const Review = mongoose.model('Review', reviewSchema);
 
+reviewSchema.pre(/^find/, function(next) {
+    this.populate({
+        path: 'user',
+        select: 'name photo'
+    }).populate({
+        path: 'tour',
+        select: 'name'
+    });
+        
+    next()
+    })
+
+
+
+const Review = mongoose.model('Review', reviewSchema);
 module.exports = Review;
