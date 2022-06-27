@@ -3,7 +3,7 @@ const router = express.Router();
 ////////\\\\\\ controller contains our route handlers in exports. (instead of const) form.
 const tourController = require('../controllers/tourController');
 const authController = require('../controllers/authController');
-const reviewController = require('../controllers/reviewController');
+const reviewRouter = require('./reviewRoute');
 
 //////////////\\\\\\\  params middleware  /////////\\\\\\\\\\\\\
 // router.param('id', tourController.checkId)
@@ -13,6 +13,12 @@ const reviewController = require('../controllers/reviewController');
 // router.get('/', tourController.getAllTours);
 //post request to the tours endpoint
 // router.post('/',  tourController.createNewTour)
+
+//// EXPRESS NESTED ROUTES
+router.use('/:tourId/reviews', reviewRouter);
+
+
+
 router.route('/').get( authController.protect, tourController.getAllTours).post(tourController.createNewTour);
 router.route('/tours-stats').get(tourController.getTourStats)
 // get top 5 cheap route we use the alias top TOurs middleware inside controller
@@ -34,9 +40,7 @@ router.delete('/:id', authController.protect, authController.restrictTo('admin',
 
 //  router.get('/top-5-cheap', (tourController.aliasTopTours, tourController.getAllTours));
 
-//// NESTED ROUTES
-router.route('/:tourId/reviews').post(
-    authController.protect, authController.restrictTo('user'), reviewController.createReview).get(authController.protect, reviewController.getAllReviews);
+
 
 
 

@@ -23,8 +23,7 @@ router.route('/').get(userController.getAllUsers);
 // POST /tour/1234/reviews
 // GET /tour/1234/reviews
 router.route('/:tourId/reviews').post(
-    authController.protect, authController.restrictTo('user'), reviewController.createReview).get(authController.protect, reviewController.getAllReviews);
-
+    authController.protect, authController.restrictTo('user'), reviewController.createReview);
 
 
 module.exports = router;
