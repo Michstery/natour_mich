@@ -5,6 +5,7 @@ const Tour = require('../models/tourModel');
 const APIFeatures = require('../utilities/apiFeatures');
 const catchAsync = require('../utilities/catchAsync');
 const AppError = require('../utilities/appError');
+const Factory = require('./handlerFactory');
 
 
 // convert file we'll be using into JSON format
@@ -161,33 +162,34 @@ exports.updateTour = catchAsync(async (req, res, next)=>{
 
 });
 
-exports.deleteTour = catchAsync(async (req, res, next)=>{
-//     if(req.params.id * 1 > tours.length){
-//         return res.status(404).json({
-//         status: 'failed',
-//         message: 'Invalid ID'
-//     })
-// }
-    // try{
-        const tour = await Tour.findByIdAndDelete(req.params.id);
-        if(!tour){
-            return next(new AppError('No Tour found with this ID', 404))
-         }
+exports.deleteTour = Factory.deleteOne(Tour);
+// exports.deleteTour = catchAsync(async (req, res, next)=>{
+// //     if(req.params.id * 1 > tours.length){
+// //         return res.status(404).json({
+// //         status: 'failed',
+// //         message: 'Invalid ID'
+// //     })
+// // }
+//     // try{
+//         const tour = await Tour.findByIdAndDelete(req.params.id);
+//         if(!tour){
+//             return next(new AppError('No Tour found with this ID', 404))
+//          }
 
-        res.status(204).json({
-            status: 'success',
-            data: null
-        })
-    // }catch(err){
-    //     res.status(404).json({
-    //         status: 'fail',
-    //         message: err
-    //     })
-    // }
+//         res.status(204).json({
+//             status: 'success',
+//             data: null
+//         })
+//     // }catch(err){
+//     //     res.status(404).json({
+//     //         status: 'fail',
+//     //         message: err
+//     //     })
+//     // }
 
 
 
-});
+// });
 
 exports.getTourStats = catchAsync(async (req, res, next)=>{
     // try{

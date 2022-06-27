@@ -1,6 +1,7 @@
 const User = require('../models/userModel');
 const AppError = require('../utilities/appError');
 const catchAsync = require('../utilities/catchAsync');
+const Factory = require('./handlerFactory');
 
 
 /////////\\\\\\\\\  ~ USERS HANDLER FUNCTIONS ~ ////////////////\\\\\\\\\\\
@@ -45,3 +46,5 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
         data: null
     });
 });
+
+exports.deleteUser = Factory.deleteOne(User);
