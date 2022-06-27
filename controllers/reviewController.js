@@ -14,6 +14,10 @@ exports.getAllReviews = catchAsync( async (req, res, next) => {
 });
 
 exports.createReview = catchAsync(async (req, res, neext) =>{
+    // ALLOW NESTED ROUTES
+    if (!req.body.tour) req.body.tour = req.params.tourId;
+    if (!req.body.user) req.body.user = req.user.id;
+
     const newReview = await Review.create(req.body);
     if(!newReview){
         return next(new AppError('No Review Created', 400))
