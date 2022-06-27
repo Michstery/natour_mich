@@ -3,6 +3,7 @@ const router = express.Router();
 ////////\\\\\\ controller contains our route handlers in exports. (instead of const) form.
 const tourController = require('../controllers/tourController');
 const authController = require('../controllers/authController');
+const reviewController = require('../controllers/reviewController');
 
 //////////////\\\\\\\  params middleware  /////////\\\\\\\\\\\\\
 // router.param('id', tourController.checkId)
@@ -32,6 +33,10 @@ router.patch('/:id', tourController.updateTour)
 router.delete('/:id', authController.protect, authController.restrictTo('admin','lead-guide'), tourController.deleteTour)
 
 //  router.get('/top-5-cheap', (tourController.aliasTopTours, tourController.getAllTours));
+
+//// NESTED ROUTES
+router.route('/:tourId/reviews').post(
+    authController.protect, authController.restrictTo('user'), reviewController.createReview).get(authController.protect, reviewController.getAllReviews);
 
 
 
