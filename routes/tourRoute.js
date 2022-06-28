@@ -19,7 +19,7 @@ router.use('/:tourId/reviews', reviewRouter);
 
 
 
-router.route('/').get( authController.protect, tourController.getAllTours).post(tourController.createNewTour);
+router.route('/').get(tourController.getAllTours).post(authController.protect, authController.restrictTo('admin', 'lead-guide'), tourController.createNewTour);
 router.route('/tours-stats').get(tourController.getTourStats)
 // get top 5 cheap route we use the alias top TOurs middleware inside controller
 router.route('/top-5-cheap').get(tourController.aliasTopTours, tourController.getAllTours);
@@ -30,11 +30,11 @@ router.delete('/delete-all-tours',tourController.deleteData);
 router.post('/import-all-tours', tourController.importData);
 /////////////////////////////////////////////////////////////
 
-router.route('/monthly-plan/:year').get(tourController.getMonthlyPlan)
+router.route('/monthly-plan/:year').get(tourController.getMonthlyPlan, authController.protect, authController.restrictTo('admin','lead-guide'))
 // using an id type get response, emphasis on req.params = url parameters
 router.get('/:id', tourController.getTour)
 // using the PATCH http method we would be updating our file
-router.patch('/:id', tourController.updateTour)
+router.patch('/:id', authController.protect, authController.restrictTo('admin','lead-guide', 'guide'), tourController.updateTour)
 // delete http method
 router.delete('/:id', authController.protect, authController.restrictTo('admin','lead-guide'), tourController.deleteTour)
 
