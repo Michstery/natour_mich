@@ -1,3 +1,5 @@
+const fs = require('fs');
+///////////////////////////////////////////
 const User = require('../models/userModel');
 const AppError = require('../utilities/appError');
 const catchAsync = require('../utilities/catchAsync');
@@ -45,3 +47,29 @@ exports.getAllUsers = Factory.getAll(User);
 exports.getUser = Factory.getOne(User);
 exports.deleteUser = Factory.deleteOne(User);
 exports.updateUser = Factory.updateOne(User);
+
+// IMPORT DATA INTO DB
+exports.importData = async () => {
+    const users = JSON.parse(
+        fs.readFileSync(`${__dirname}/../dev-data/data/users.json`, 'utf-8')
+      );
+
+    try {
+      await User.create(users, { validateBeforeSave: false });
+      console.log('Data successfully loaded!');
+    } catch (err) {
+      console.log(err);
+    }
+    process.exit();
+  };
+  
+  // DELETE ALL DATA FROM DB
+  exports.deleteData = async () => {
+    try {
+      await User.deleteMany();
+      console.log('Data successfully deleted!');
+    } catch (err) {
+      console.log(err);
+    }
+    process.exit();
+  };

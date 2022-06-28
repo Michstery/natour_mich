@@ -1,3 +1,5 @@
+const fs = require('fs');
+///////////////////////////////////////////
 const Review = require('../models/reviewModel');
 const catchAsync = require('../utilities/catchAsync');
 const APIFeatures = require('../utilities/apiFeatures');
@@ -30,6 +32,34 @@ exports.createReview = Factory.createOne(Review);
 exports.getReview = Factory.getOne(Review);
 exports.updateReview = Factory.updateOne(Review);
 exports.deleteReview = Factory.deleteOne(Review);
+
+
+//////////////////////////////////////////////////////////////////
+// IMPORT DATA INTO DB
+exports.importData = async () => {
+    const reviews = JSON.parse(
+        fs.readFileSync(`${__dirname}/../dev-data/data/reviews.json`, 'utf-8')
+      );
+
+    try {
+      await Review.create(reviews, { validateBeforeSave: false });
+      console.log('Data successfully loaded!');
+    } catch (err) {
+      console.log(err);
+    }
+    process.exit();
+  };
+  
+  // DELETE ALL DATA FROM DB
+  exports.deleteData = async () => {
+    try {
+      await Review.deleteMany();
+      console.log('Data successfully deleted!');
+    } catch (err) {
+      console.log(err);
+    }
+    process.exit();
+  };
 
 
 //exports.createReview = catchAsync(async (req, res, next) =>{

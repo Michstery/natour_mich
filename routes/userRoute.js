@@ -11,6 +11,12 @@ router.post('/login', authController.login);
 router.post('/forgotPassword', authController.forgotPassword); 
 router.patch('/resetPassword/:token', authController.resetPassword); 
 
+// for loading and deleting pre-set data
+/////////////////////////////////////////////////////////////
+router.delete('/delete-all-users', userController.deleteData);
+router.post('/import-all-users', userController.importData);
+/////////////////////////////////////////////////////////////
+
 ////// PROTECT ROUTE WITH MIDDLEWARE ///////////////
 router.use(authController.protect);
 router.patch('/updatePassword', authController.updatePassword); 

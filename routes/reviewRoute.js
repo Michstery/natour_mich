@@ -5,6 +5,13 @@ const authController = require('../controllers/authController');
 
 const router = express.Router({ mergeParams: true });
 
+
+// for loading and deleting pre-set data
+/////////////////////////////////////////////////////////////
+router.delete('/delete-all-reviews', reviewController.deleteData);
+router.post('/import-all-reviews', reviewController.importData);
+/////////////////////////////////////////////////////////////
+
 /////////////////////////////////////////////////////
 /// PROTECT THE ROUTE ////////
 router.use(authController.protect);
