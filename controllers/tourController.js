@@ -82,34 +82,8 @@ exports.getAllTours = catchAsync(async (req, res, next)=>{
 });
 
 
-
-
-
-exports.getTour = catchAsync(async (req, res, next)=>{
-    // try{
-        const tour = await Tour.findById(req.params.id).populate('reviews');
-        if(!tour){
-            //for all :id routes patch,delete e.t.c it majorly handles their err
-           return next(new AppError('No Tour found with this ID', 404))
-        }
-        // Tour.findOne({ _id: req.params.id })
-        res.status(200).json({
-            status: 'success',
-            data: {
-                tour
-            }
-        })
-    // }catch(err){
-    //     res.status(404).json({
-    //         status: 'fail',
-    //         message: err
-    //     })
-    // }
-
-
-});
-
 exports.createNewTour = Factory.createOne(Tour);
+exports.getTour = Factory.getOne(Tour, {path: 'reviews'} );
 exports.updateTour = Factory.updateOne(Tour);
 exports.deleteTour = Factory.deleteOne(Tour);
 
@@ -133,8 +107,30 @@ exports.deleteTour = Factory.deleteOne(Tour);
 //     //     })
 //     // }
 
-
 // });
+
+//exports.getTour = catchAsync(async (req, res, next)=>{
+    //     // try{
+    //         const tour = await Tour.findById(req.params.id).populate('reviews');
+    //         if(!tour){
+    //             //for all :id routes patch,delete e.t.c it majorly handles their err
+    //            return next(new AppError('No Tour found with this ID', 404))
+    //         }
+    //         // Tour.findOne({ _id: req.params.id })
+    //         res.status(200).json({
+    //             status: 'success',
+    //             data: {
+    //                 tour
+    //             }
+    //         })
+    //     // }catch(err){
+    //     //     res.status(404).json({
+    //     //         status: 'fail',
+    //     //         message: err
+    //     //     })
+    //     // }
+        
+    // });
 
 // exports.updateTour = catchAsync(async (req, res, next)=>{
 // //     if(req.params.id * 1 > tours.length){

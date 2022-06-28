@@ -47,5 +47,6 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
     });
 });
 
+exports.getUser = Factory.getOne(User);
 exports.deleteUser = Factory.deleteOne(User);
 exports.updateUser = Factory.updateOne(User);

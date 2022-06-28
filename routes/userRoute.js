@@ -17,7 +17,7 @@ router.delete('/deleteMe', authController.protect, userController.deleteMe);
 
 /////////\\\\\\\\\  ~ USERS ROUTES ~ ////////////////\\\\\\\\\\\
 router.route('/').get(userController.getAllUsers);
-router.route('/:id').delete(authController.restrictTo('admin'), userController.deleteUser).patch(authController.restrictTo('admin'), userController.updateUser);
+router.route('/:id').get(userController.getUser).delete(authController.restrictTo('admin'), userController.deleteUser).patch(authController.restrictTo('admin'), userController.updateUser);
 // router.route('/:id').get(userController.getUser).patch(userController.updateUser).delete(userController.deleteUser);
 
 /// NESTED ROUTES
