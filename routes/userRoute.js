@@ -19,16 +19,16 @@ router.delete('/deleteMe', userController.deleteMe);
 router.get('/me', userController.getMe, userController.getUser);
 
 
-/////////\\\\\\\\\  ~ USERS ROUTES ~ ////////////////\\\\\\\\\\\
+/////////\\\\\\\\\  ~ USERS ROUTES FOR ADMIN ALONE~ ////////////////\\\\\\\\\\\
+router.use(authController.restrictTo('admin'));
 router.route('/').get(userController.getAllUsers);
-router.route('/:id').get(userController.getUser).delete(authController.restrictTo('admin'), userController.deleteUser).patch(authController.restrictTo('admin'), userController.updateUser);
+router.route('/:id').get(userController.getUser).delete(userController.deleteUser).patch(userController.updateUser);
 // router.route('/:id').get(userController.getUser).patch(userController.updateUser).delete(userController.deleteUser);
 
 /// NESTED ROUTES
 // POST /tour/1234/reviews
 // GET /tour/1234/reviews
-router.route('/:tourId/reviews').post(
-    authController.protect, authController.restrictTo('user'), reviewController.createReview);
+
 
 
 module.exports = router;
