@@ -5,6 +5,11 @@ const Factory = require('./handlerFactory');
 
 
 /////////\\\\\\\\\  ~ USERS HANDLER FUNCTIONS ~ ////////////////\\\\\\\\\\\
+exports.getMe = (req, res, next) => {
+    req.params.id = req.user.id;
+    next();
+};
+
 exports.updateMe = catchAsync( async (req, res, next) => {
     // 1) create error if user POSTs password data
     if (req.body.password || req.body.passwordConfirm) {
