@@ -5,17 +5,6 @@ const Factory = require('./handlerFactory');
 
 
 /////////\\\\\\\\\  ~ USERS HANDLER FUNCTIONS ~ ////////////////\\\\\\\\\\\
-exports.getAllUsers = catchAsync(async(req, res) => {
-    const users = await User.find();
-    res.status(200).json({
-        status: 'success',
-        results: users.length,
-        data: {
-            users
-        }
-    });
-});
-
 exports.updateMe = catchAsync( async (req, res, next) => {
     // 1) create error if user POSTs password data
     if (req.body.password || req.body.passwordConfirm) {
@@ -47,6 +36,7 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
     });
 });
 
+exports.getAllUsers = Factory.getAll(User);
 exports.getUser = Factory.getOne(User);
 exports.deleteUser = Factory.deleteOne(User);
 exports.updateUser = Factory.updateOne(User);
