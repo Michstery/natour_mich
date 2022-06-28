@@ -83,28 +83,7 @@ exports.getAllTours = catchAsync(async (req, res, next)=>{
 
 
 
-exports.createNewTour =  catchAsync(async (req, res, next)=>{
-    // try{
-        const newTour = await Tour.create(req.body);
-        if(!newTour){
-            return next(new AppError('No Tour Created', 400))
-         }
- 
-        res.status(201).json({
-            status:'success',
-            data: {
-                tour : newTour
-            } 
-        })
-    // } catch(err){
-    //     res.status(400).json({
-    //         status: 'fail',
-    //         message: err
-    //     })
-    // }
 
-
-});
 
 exports.getTour = catchAsync(async (req, res, next)=>{
     // try{
@@ -130,39 +109,66 @@ exports.getTour = catchAsync(async (req, res, next)=>{
 
 });
 
-exports.updateTour = catchAsync(async (req, res, next)=>{
-//     if(req.params.id * 1 > tours.length){
-//         return res.status(404).json({
-//         status: 'failed',
-//         message: 'Invalid ID'
-//     })
-// }
-    // try{
-        const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
-            new: true,
-            runValidators: true
-        });
-        if(!tour){
-            return next(new AppError('No Tour found with this ID', 404))
-         }
-
-        res.status(200).json({
-            status: 'success',
-            data: {
-                tour
-            }
-        })
-    // } catch(err){
-    //     res.status(404).json({
-    //         status: 'fail',
-    //         message: err
-    //     })
-    // }
-
-
-});
-
+exports.createNewTour = Factory.createOne(Tour);
+exports.updateTour = Factory.updateOne(Tour);
 exports.deleteTour = Factory.deleteOne(Tour);
+
+// exports.createNewTour =  catchAsync(async (req, res, next)=>{
+//     // try{
+//         const newTour = await Tour.create(req.body);
+//         if(!newTour){
+//             return next(new AppError('No Tour Created', 400))
+//          }
+ 
+//         res.status(201).json({
+//             status:'success',
+//             data: {
+//                 tour : newTour
+//             } 
+//         })
+//     // } catch(err){
+//     //     res.status(400).json({
+//     //         status: 'fail',
+//     //         message: err
+//     //     })
+//     // }
+
+
+// });
+
+// exports.updateTour = catchAsync(async (req, res, next)=>{
+// //     if(req.params.id * 1 > tours.length){
+// //         return res.status(404).json({
+// //         status: 'failed',
+// //         message: 'Invalid ID'
+// //     })
+// // }
+//     // try{
+//         const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
+//             new: true,
+//             runValidators: true
+//         });
+//         if(!tour){
+//             return next(new AppError('No Tour found with this ID', 404))
+//          }
+
+//         res.status(200).json({
+//             status: 'success',
+//             data: {
+//                 tour
+//             }
+//         })
+//     // } catch(err){
+//     //     res.status(404).json({
+//     //         status: 'fail',
+//     //         message: err
+//     //     })
+//     // }
+
+
+// });
+
+
 // exports.deleteTour = catchAsync(async (req, res, next)=>{
 // //     if(req.params.id * 1 > tours.length){
 // //         return res.status(404).json({
