@@ -123,6 +123,11 @@ const tourSchema = new mongoose.Schema({
 
 });
 
+// indexes for efficient reading performance ( 1 = decending, -1 = ascending)
+//tourSchema.index({price: 1});
+tourSchema.index({ price: 1, ratingsAverage: -1 });
+tourSchema.index({slug: 1});
+
 //define a virtual property, a field that is temporary and does not store in DB
 tourSchema.virtual('durationWeeks').get(function(){
     return this.duration /7;
