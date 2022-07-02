@@ -32,6 +32,7 @@ const reviewSchema = new mongoose.Schema({
         toObject: {virtuals: true}
 });
 
+reviewSchema.index({ tour: 1, user: 1 }, { unique: true });
 
 reviewSchema.pre(/^find/, function(next) {
     // this.populate({
@@ -73,8 +74,6 @@ reviewSchema.statics.calcAverageRatings = async function(tourId) {
             ratingsAverage: 4.5
         })
     }
-
-    console.log(stats)
 }
 
 reviewSchema.post('save', function(){
@@ -84,7 +83,6 @@ reviewSchema.post('save', function(){
 
 reviewSchema.pre(/^findOneAnd/, async function(next){
     this.r = await this.clone();
-    console.log(this.r)
     next()
 });
 
