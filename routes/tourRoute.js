@@ -30,7 +30,10 @@ router.delete('/delete-all-tours',tourController.deleteData);
 router.post('/import-all-tours', tourController.importData);
 /////////////////////////////////////////////////////////////
 
-router.route('/monthly-plan/:year').get(tourController.getMonthlyPlan, authController.protect, authController.restrictTo('admin','lead-guide'))
+router.route('/monthly-plan/:year').get(tourController.getMonthlyPlan, authController.protect, authController.restrictTo('admin','lead-guide'));
+/////////////////////////////////////////////////////////////////////////
+router.route('/tours-within/:distance/center/:latlng/unit/:unit')
+
 // using an id type get response, emphasis on req.params = url parameters
 router.get('/:id', tourController.getTour)
 // using the PATCH http method we would be updating our file
