@@ -4,7 +4,7 @@ const fs = require('fs');
 const Tour = require('../models/tourModel');
 //const APIFeatures = require('../utilities/apiFeatures');
 const catchAsync = require('../utilities/catchAsync');
-//const AppError = require('../utilities/appError');
+const AppError = require('../utilities/appError');
 const Factory = require('./handlerFactory');
 
 //-------- Middle ware ------------
@@ -136,6 +136,29 @@ exports.getMonthlyPlan = catchAsync(async (req, res, next)=>{
     // }
 });
 
+/// tours-within/:distance/center/:latlng/unit/:unit
+exports.getToursWithin = catchAsync(async (req, res, next) => {
+    const { distance, latlng, unit } = req.params;
+    const [lat, lng] = latlng.split(',,');
+
+    if(!lat || lng) {
+        next(new AppError('please provide latitude and longitude in the format lat, lng.', 400))
+    }
+    console.log(distance, lat, lng, unit);
+
+    const tours = await Tour.find({ startLocation: {$geoWithin} });
+
+    res.status(200).json({
+        status: 'success',
+        data: {
+            data: tours
+        }
+    });
+
+});
+
+
+////////////////////////////////////////////////////////////////////////////////////////
 // IMPORT DATA INTO DB
 exports.importData = async () => {
     const tours = JSON.parse(
@@ -161,7 +184,7 @@ exports.importData = async () => {
     }
     process.exit();
   };
-
+////////////////////////////////////////////////////////////////////////////////////////
 
   
 // convert file we'll be using into JSON format

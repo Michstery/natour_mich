@@ -32,7 +32,7 @@ router.post('/import-all-tours', tourController.importData);
 
 router.route('/monthly-plan/:year').get(tourController.getMonthlyPlan, authController.protect, authController.restrictTo('admin','lead-guide'));
 /////////////////////////////////////////////////////////////////////////
-router.route('/tours-within/:distance/center/:latlng/unit/:unit')
+router.route('/tours-within/:distance/center/:latlng/unit/:unit').get(tourController.getToursWithin)
 
 // using an id type get response, emphasis on req.params = url parameters
 router.get('/:id', tourController.getTour)
