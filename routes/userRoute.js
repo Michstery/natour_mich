@@ -1,9 +1,12 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
 ////////\\\\\\ controller contains our route handlers in exports. (instead of const) form.
 const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
 const reviewController = require('./../controllers/reviewController');
+
+const upload = multer({ dest: 'public/img/users' });
 
 router.post('/signup', authController.signup);
 router.post('/login', authController.login); 
@@ -20,7 +23,7 @@ router.post('/import-all-users', userController.importData);
 ////// PROTECT ROUTE WITH MIDDLEWARE ///////////////
 router.use(authController.protect);
 router.patch('/updatePassword', authController.updatePassword); 
-router.patch('/updateMe', userController.updateMe);
+router.patch('/updateMe', upload.single('photo'), userController.updateMe);
 router.delete('/deleteMe', userController.deleteMe);
 router.get('/me', userController.getMe, userController.getUser);
 
