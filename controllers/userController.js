@@ -1,10 +1,36 @@
 const fs = require('fs');
+const multer = require('multer');
 ///////////////////////////////////////////
 const User = require('../models/userModel');
 const AppError = require('../utilities/appError');
 const catchAsync = require('../utilities/catchAsync');
 const Factory = require('./handlerFactory');
 
+/////////////////        IMAGE UPLOAD WITH MULTER      ///////////////////
+const multerStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'public/img/users');
+  },
+  filename: (req, file, cb) => {
+    //user-(userId)123456-(date)12032022.jpegg(file extension)
+    const extension = file.mimetype.split('/')[1];
+    cb(null, `user-${req.user.id}-${Date.now()}-${extension}`);
+  }
+});
+
+const multerFilter = (req, filr, cb) => {
+  if (file.mimetype.startsWith('image')){
+    cb(null, true)
+  } else {
+    cb(new AppError('Not an Image! Please upload only images.', 400), false)
+  }
+}
+
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter
+});
+exports.uploadUserPhoto =  upload.single('photo');
 
 /////////\\\\\\\\\  ~ USERS HANDLER FUNCTIONS ~ ////////////////\\\\\\\\\\\
 exports.getMe = (req, res, next) => {
