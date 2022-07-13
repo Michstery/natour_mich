@@ -23,7 +23,7 @@ router.post('/import-all-users', userController.importData);
 ////// PROTECT ROUTE WITH MIDDLEWARE ///////////////
 router.use(authController.protect);
 router.patch('/updatePassword', authController.updatePassword); 
-router.patch('/updateMe', userController.uploadUserPhoto, userController.updateMe);
+router.patch('/updateMe', userController.uploadUserPhoto, userController.resizeUserPhoto, userController.updateMe);
 router.delete('/deleteMe', userController.deleteMe);
 router.get('/me', userController.getMe, userController.getUser);
 

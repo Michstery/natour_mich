@@ -1,5 +1,6 @@
 const fs = require('fs');
 const multer = require('multer');
+const sharp = requrie('sharp');
 ///////////////////////////////////////////
 const User = require('../models/userModel');
 const AppError = require('../utilities/appError');
@@ -7,16 +8,18 @@ const catchAsync = require('../utilities/catchAsync');
 const Factory = require('./handlerFactory');
 
 /////////////////        IMAGE UPLOAD WITH MULTER      ///////////////////
-const multerStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'public/img/users');
-  },
-  filename: (req, file, cb) => {
-    //user-(userId)123456-(date)12032022.jpegg(file extension)
-    const extension = file.mimetype.split('/')[1];
-    cb(null, `user-${req.user.id}-${Date.now()}.${extension}`);
-  }
-});
+// const multerStorage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, 'public/img/users');
+//   },
+//   filename: (req, file, cb) => {
+//     //user-(userId)123456-(date)12032022.jpegg(file extension)
+//     const extension = file.mimetype.split('/')[1];
+//     cb(null, `user-${req.user.id}-${Date.now()}.${extension}`);
+//   }
+// });
+
+const multerStorage = multer.memoryStorage();
 
 const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith('image')){
@@ -31,6 +34,12 @@ const upload = multer({
   fileFilter: multerFilter
 });
 exports.uploadUserPhoto =  upload.single('photo');
+
+exports.resizeUserPhoto = (req, res, next) => {
+  if (!req.file) return next();
+
+  sharp(req.file.buffer).resize(500, 500);
+}
 
 /////////\\\\\\\\\  ~ USERS HANDLER FUNCTIONS ~ ////////////////\\\\\\\\\\\
 exports.getMe = (req, res, next) => {
