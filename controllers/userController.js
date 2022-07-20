@@ -1,6 +1,6 @@
 const fs = require('fs');
 const multer = require('multer');
-const sharp = requrie('sharp');
+const sharp = require('sharp');
 ///////////////////////////////////////////
 const User = require('../models/userModel');
 const AppError = require('../utilities/appError');
@@ -38,7 +38,12 @@ exports.uploadUserPhoto =  upload.single('photo');
 exports.resizeUserPhoto = (req, res, next) => {
   if (!req.file) return next();
 
-  sharp(req.file.buffer).resize(500, 500);
+  req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`
+  //`user-${req.user.id}-${Date.now()}.${extension}`
+
+  sharp(req.file.buffer).resize(500, 500).toFormat('jpeg').jpeg({quality: 90}).toFile(`public/img/users/${req.file.filename}`);
+
+  next();
 }
 
 /////////\\\\\\\\\  ~ USERS HANDLER FUNCTIONS ~ ////////////////\\\\\\\\\\\
