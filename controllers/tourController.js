@@ -1,11 +1,41 @@
 // since we're not using a real db, we'll be reading from a file using fs
 const fs = require('fs');
+const multer = require('multer');
+const sharp = require('sharp');
 // we require the tour db from the tour model file
 const Tour = require('../models/tourModel');
 //const APIFeatures = require('../utilities/apiFeatures');
 const catchAsync = require('../utilities/catchAsync');
 const AppError = require('../utilities/appError');
 const Factory = require('./handlerFactory');
+
+
+/////////////////        IMAGE UPLOAD WITH MULTER      ///////////////////
+const multerStorage = multer.memoryStorage();
+
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith('image')){
+    cb(null, true)
+  } else {
+    cb(new AppError('Not an Image! Please upload only images.', 400), false)
+  }
+}
+
+const upload = multer({
+    storage: multerStorage,
+    fileFilter: multerFilter
+  });
+
+  exports.uploadTourImages = upload.fields([
+      { name: 'imageCover', maxCount: 1 },
+      { name: 'images', maxCount: 3 }
+    ]);
+
+exports.resizeTourImages = (req,res,next) => {
+    console.log(req.files);
+    next();
+}
+/////////////////        IMAGE UPLOAD WITH MULTER EXIT     ///////////////////
 
 //-------- Middle ware ------------
 exports.aliasTopTours = (req, res, next) => {

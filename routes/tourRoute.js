@@ -38,7 +38,7 @@ router.route('/distances/:latlng/unit/:unit').get(tourController.getDistance);
 // using an id type get response, emphasis on req.params = url parameters
 router.get('/:id', tourController.getTour)
 // using the PATCH http method we would be updating our file
-router.patch('/:id', authController.protect, authController.restrictTo('admin','lead-guide', 'guide'), tourController.updateTour)
+router.patch('/:id', authController.protect, authController.restrictTo('admin','lead-guide'), tourController.uploadTourImages, tourController.resizeTourImages, tourController.updateTour);
 // delete http method
 router.delete('/:id', authController.protect, authController.restrictTo('admin','lead-guide'), tourController.deleteTour)
 
