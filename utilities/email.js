@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const htmlToText = require('html-to-text');
 
 module.exports = class Email {
   constructor(user, url){
@@ -9,7 +10,7 @@ module.exports = class Email {
   }
 
   // 1) create Transporter
-  createTransport() {
+  newTransport() {
     if(process.env.NODE_ENV === 'production') {
       // sendgrid
       return 1;
@@ -27,35 +28,30 @@ module.exports = class Email {
   }
 
   // 2) send the actual Email
-  send(template, subject) {
+  async send(template, subject) {
     // i) render HTML Based on template = pug 
+    const html = pug.renderFile(`${__dirname}/../views/emails/${template}.pug`, {
+      firstName: this.firstName,
+      url: this.url,
+      subject
+    })
 
     // ii) define email options
     const mailOptions = {
-      from: 'Mich <mich@michstery.io>',
-      to: options.email,
-      subject: options.subject,
-      text: options.message
-      // html:
+      from: this.from,
+      to: this.to,
+      subject,
+      html,
+      text: htmlToText.fromString(html)
     };
 
     // iii) create a transport and send email
+    await this.newTransport().sendMail(mailOptions);
 
   }
 
-  sendWelcome() {
-    this.send('welcome', 'Welcome To The MichNatours Family!')
+  async sendWelcome() {
+    await this.send('welcome', 'Welcome To The MichNatours Family!')
   }
 
 };
-
-const sendEmail = async options => {
-
-
-  // 2) Define the email options
-  
-
-  // 3) Actually send the email
-  await transporter.sendMail(mailOptions);
-};
-
