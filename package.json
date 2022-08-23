@@ -6,7 +6,8 @@
   "scripts": {
     "start:dev": "nodemon server.js",
     "start:prod": "NODE_ENV=production nodemon server.js",
-    "debug": "ndb server.js"
+    "debug": "ndb server.js",
+    "start": "node server.js"
   },
   "author": "michstery",
   "license": "ISC",
@@ -24,9 +25,21 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.7.2",
+    "nodemon": "^2.0.19",
+    "pug": "^3.0.2",
     "sharp": "^0.30.7",
     "slugify": "^1.6.4",
     "validator": "^13.7.0",
     "xss-clean": "^0.1.1"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Michstery/natour_mich.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/Michstery/natour_mich/issues"
+  },
+  "homepage": "https://github.com/Michstery/natour_mich#readme"
 }
