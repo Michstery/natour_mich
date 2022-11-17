@@ -31,7 +31,8 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please provide a password'],
         minlength: 8,
-        select: false
+        select: false,
+        match: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i
     },
     passwordConfirm: {
         type: String,
@@ -100,7 +101,10 @@ userSchema.methods.changedPasswordAfter = function(JWTTimestamp) {
   };
 
   userSchema.methods.createPasswordResetToken = function() {
-    const resetToken = crypto.randomBytes(32).toString('hex');
+      //changedd from 32 to 4   EXPERIMENT OOO !!!!!
+    //const resetToken = crypto.randomBytes(2).toString('hex');
+    Math.random(1)
+    resetToken
   
     this.passwordResetToken = crypto
       .createHash('sha256')

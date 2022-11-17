@@ -12,6 +12,7 @@ router.post('/signup', authController.signup);
 router.post('/login', authController.login); 
 
 router.post('/forgotPassword', authController.forgotPassword); 
+router.post('/validate/otp', authController.validateOtp); 
 router.patch('/resetPassword/:token', authController.resetPassword); 
 
 // for loading and deleting pre-set data
